@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+
+  sqlserver:
+    image: "mcr.microsoft.com/mssql/server:2019-latest"
+  # Para Mac con ARM64 Silicon usar esta imagen 
+    #image: "avilesodar/sqlserver:latest"
+    user: root
+    environment:
+      ACCEPT_EULA: Y
+
+  redis:
+    image: "redis:6.2-alpine"
+
+  mongodb:
+    image: "mongo:7.0"
+
+  redis_commander:
+    image: "rediscommander/redis-commander:latest"
+    depends_on:
+      - redis
+
+  mongo_express:
+    image: "mongo-express:latest"
+    depends_on:
+      - mongodb
+
+  socketi:
+    image: "quay.io/soketi/soketi:1.0-16-distroless"
+    user: root
+    environment:
+      SOKETI_DEFAULT_APP_ENABLE_CLIENT_MESSAGES: true
